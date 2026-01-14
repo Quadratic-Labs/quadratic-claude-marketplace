@@ -2,10 +2,21 @@
   "name": "devflow",
   "version": "1.0.0",
   "description": "Development workflow plugin that greets you and loads context about recent issues and branches",
+  "author": {
+    "name": "Thomas Zamojski",
+    "email": "thomas.zamojski@quadratic-labs.com"
+  },
   "hooks": {
-    "StartSession": {
-      "command": "./StartSession.sh",
-      "description": "Greets user and loads recent git branches and GitHub issues"
-    }
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./SessionStart.sh",
+            "description": "Greets user and loads recent git branches and GitHub issues"
+          }
+        ]
+      }
+    ]
   }
 }
