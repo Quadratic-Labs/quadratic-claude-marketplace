@@ -1,18 +1,15 @@
 {
   "name": "quadratic-claude-marketplace",
+  "owner": {
+    "name": "Quadratic",
+    "email": "sys-admin@quadratic-labs.com"
+  },
   "description": "A curated marketplace of Claude Code plugins for Quadratic",
   "version": "1.0.0",
-  "author": "Quadratic",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/quadratichq/quadratic-claude-marketplace"
-  },
   "plugins": [
     {
       "name": "devflow",
-      "version": "1.0.0",
-      "description": "Development workflow plugin that greets you and loads context about recent issues and branches",
-      "path": "devflow"
+      "source": "./devflow"
     }
   ]
 }
