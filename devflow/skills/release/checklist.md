@@ -1,0 +1,8 @@
+- [ ] Milestone complete
+- [ ] Versions bumped
+- [ ] Linting done
+- [ ] Tests passed
+- [ ] Documentation updated
+- [ ] Changelog updated
+- [ ] Release branch created
+- [ ] Tag pushed

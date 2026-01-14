@@ -1,0 +1,9 @@
+{
+  "name": "release",
+  "description": "Interactive release workflow with automated checks and tasks",
+  "version": "1.0.0",
+  "command": "release",
+  "aliases": ["rel", "ship"],
+  "instructions": "skill.md",
+  "config": "release.yaml"
+}

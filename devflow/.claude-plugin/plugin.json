@@ -1,10 +1,12 @@
 {
   "name": "devflow",
   "version": "1.0.0",
-  "description": "Development workflow plugin that greets you and loads context about recent issues and branches",
+  "description": "Quadratic's development workflow assistant",
+  "repository": "https://github.com/Quadratic-Labs/quadratic-claude-marketplace",
   "author": {
     "name": "Thomas Zamojski",
-    "email": "thomas.zamojski@quadratic-labs.com"
+    "email": "thomas.zamojski@quadratic-labs.com",
+    "url": "https://github.com/thomas-quadratic"
   },
   "hooks": {
     "SessionStart": [
@@ -18,5 +20,6 @@
         ]
       }
     ]
-  }
+  },
+  "skills": "./skills"
 }
