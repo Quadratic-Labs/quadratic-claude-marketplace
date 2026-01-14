@@ -1,0 +1,11 @@
+{
+  "name": "devflow",
+  "version": "1.0.0",
+  "description": "Development workflow plugin that greets you and loads context about recent issues and branches",
+  "hooks": {
+    "StartSession": {
+      "command": "./StartSession.sh",
+      "description": "Greets user and loads recent git branches and GitHub issues"
+    }
+  }
+}
