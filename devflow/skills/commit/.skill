@@ -1,0 +1,9 @@
+{
+  "name": "commit",
+  "description": "Smart commit workflow with safety checks and conventional message generation",
+  "version": "1.0.0",
+  "command": "commit",
+  "aliases": ["ci"],
+  "instructions": "skill.md",
+  "config": "commit.yaml"
+}
