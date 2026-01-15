@@ -1,0 +1,9 @@
+{
+  "name": "pr",
+  "description": "Smart PR creation and updates with auto-generated descriptions and pre-flight checks",
+  "version": "1.0.0",
+  "command": "pr",
+  "aliases": ["pull-request"],
+  "instructions": "skill.md",
+  "config": "pr.yaml"
+}
