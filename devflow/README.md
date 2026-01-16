@@ -43,6 +43,47 @@ checks:
 
 ---
 
+### Pull Request Workflow (`/pr`)
+
+Smart PR creation and updates with auto-generated descriptions and pre-flight checks.
+
+**Features:**
+- Create or update existing PRs
+- Pre-flight checks (branch pushed, up-to-date, no WIP commits)
+- Auto-detect base branch (main/master)
+- Auto-link issues from branch name or commits
+- Smart PR title generation from branch name
+- Auto-generated summary from commits/diff
+- Conditional prompts (screenshots for UI changes, large PR warnings)
+
+**Usage:**
+```
+/pr             # Create ready PR (or update if exists)
+/pr --draft     # Create draft PR
+/pr update      # Update existing PR title/body
+/pull-request   # Alias
+```
+
+**Configuration:**
+
+Edit `devflow/skills/pr/pr.yaml`:
+```yaml
+base_branch: auto  # auto | main | master | develop
+
+checks:
+  require_pushed: true
+  require_up_to_date: true
+  block_wip_commits: true
+  max_diff_lines_warning: 500
+
+conventions:
+  title_from_branch: true
+  auto_link_issues: true
+  require_test_plan: true
+```
+
+---
+
 ### Release Workflow (`/release`)
 
 Automated release management with intelligent checks and GitHub integration.
@@ -103,6 +144,7 @@ checks:
    ```
 3. Customize skill configs for your project:
    - `devflow/skills/commit/commit.yaml` - branch protection, conventions
+   - `devflow/skills/pr/pr.yaml` - PR checks, auto-linking, templates
    - `devflow/skills/release/release.yaml` - versioning, GitHub integration
-4. Use `/commit` for daily commits, `/release` for versioned releases
+4. Use `/commit` for commits, `/pr` for pull requests, `/release` for releases
 

@@ -1,0 +1,31 @@
+base_branch: auto  # auto | main | master | develop
+
+checks:
+  require_pushed: true
+  require_up_to_date: true
+  block_wip_commits: true        # block if WIP, fixup!, squash! commits exist
+  warn_if_tests_not_run: true    # remind user if test files changed
+  max_diff_lines_warning: 500    # warn if PR is too large
+
+conventions:
+  title_from_branch: true        # feature/add-login → "Add login"
+  auto_link_issues: true         # parse from branch name and commits
+  require_test_plan: true
+
+  # Patterns to extract issue numbers from branch names
+  issue_patterns:
+    - "feature/(\\d+)-"          # feature/123-description → #123
+    - "fix/(\\d+)-"              # fix/123-description → #123
+    - "bugfix/(\\d+)-"           # bugfix/123-description → #123
+    - "issue-(\\d+)"             # issue-123-description → #123
+    - "([A-Z]+-\\d+)"            # PROJ-123-description → PROJ-123 (Jira)
+
+template:
+  include_summary: true
+  include_type_checklist: true
+  include_test_plan: true
+  prompt_screenshots_for: [".tsx", ".jsx", ".vue", ".css", ".scss", ".html"]
+
+post_pr:
+  show_ci_link: true
+  suggest_reviewers: true
