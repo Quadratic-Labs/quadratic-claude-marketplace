@@ -1,0 +1,6 @@
+- [ ] Branch safety verified
+- [ ] Staged changes present
+- [ ] No sensitive files staged
+- [ ] Large files reviewed
+- [ ] Commit message approved
+- [ ] Commit executed

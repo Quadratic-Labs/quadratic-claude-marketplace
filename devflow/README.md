@@ -6,6 +6,43 @@ Comprehensive development workflow automation for software releases, testing, an
 
 ## Skills
 
+### Commit Workflow (`/commit`)
+
+Smart commit workflow with safety checks, branch protection, and intelligent commit message generation.
+
+**Features:**
+- Protected branch detection (prompt to create branch, warn, or block)
+- Sensitive file detection (`.env`, credentials, keys)
+- Large file warnings
+- Conventional or gitmoji commit message generation
+- Post-commit push/PR suggestions
+
+**Usage:**
+```
+/commit           # Interactive - analyzes changes, suggests message
+/commit fix bug   # With message hint
+/ci               # Alias
+```
+
+**Configuration:**
+
+Edit `devflow/skills/commit/commit.yaml`:
+```yaml
+branches:
+  protected: [main, master]
+  on_protected_branch: prompt  # prompt | warn | block
+
+conventions:
+  style: conventional  # conventional | gitmoji | custom
+
+checks:
+  block_sensitive_files: true
+  sensitive_patterns: [".env", "*.pem", "*secret*"]
+  warn_large_files_kb: 500
+```
+
+---
+
 ### Release Workflow (`/release`)
 
 Automated release management with intelligent checks and GitHub integration.
@@ -64,6 +101,8 @@ checks:
    # Add to your Claude Code configuration
    export CLAUDE_PLUGINS_PATH="/path/to/quadratic-claude-marketplace/devflow"
    ```
-3. Customize `devflow/skills/release/release.yaml` for your project
-4. Use `/release` command to start your first release
+3. Customize skill configs for your project:
+   - `devflow/skills/commit/commit.yaml` - branch protection, conventions
+   - `devflow/skills/release/release.yaml` - versioning, GitHub integration
+4. Use `/commit` for daily commits, `/release` for versioned releases
 

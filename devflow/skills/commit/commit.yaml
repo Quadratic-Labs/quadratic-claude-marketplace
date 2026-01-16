@@ -1,0 +1,35 @@
+branches:
+  protected: [main, master]
+  on_protected_branch: prompt  # prompt | warn | block
+  # prompt = offer choices (create branch, abort, override)
+  # warn = show warning but allow commit
+  # block = hard block, no override option
+
+conventions:
+  style: conventional  # conventional | gitmoji | custom
+  # conventional: type(scope): description
+  # gitmoji: :emoji: description
+  # custom: uses custom_pattern below
+  custom_pattern: ""
+  types: [feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert]
+  require_scope: false
+  max_subject_length: 72
+  max_body_line_length: 100
+
+checks:
+  require_staged_changes: true
+  block_sensitive_files: true
+  sensitive_patterns:
+    - ".env"
+    - ".env.*"
+    - "*.pem"
+    - "*.key"
+    - "*secret*"
+    - "*credential*"
+    - "id_rsa*"
+  warn_large_files_kb: 500
+  warn_untracked_files: true
+
+post_commit:
+  suggest_push: true
+  suggest_pr: true
