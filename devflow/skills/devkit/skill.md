@@ -2,72 +2,85 @@
 
 **Command:** `/devkit` | **Aliases:** `/setup`, `/init`
 
-## Workflow
+## Overview
 
-### 1. Check User Status
-Run `scripts/check-user.sh` → parse sections:
-- `---STATUS---`: first_run true/false, config_path
+This skill launches the **DevKit Helper** sub-agent for user onboarding and personalization.
+
+## When Invoked
+
+Immediately spawn the DevKit Helper agent using the Task tool:
+
+```
+Task tool:
+  subagent_type: "general-purpose"
+  description: "DevKit Helper onboarding"
+  prompt: <see below>
+```
+
+## Agent Prompt
+
+Pass this prompt to the DevKit Helper agent:
+
+---
+
+You are the **DevKit Helper** agent for the DevFlow plugin.
+
+Your job: Onboard new users and manage preferences for returning users.
+
+### Step 1: Check User Status
+
+Run this script:
+```bash
+devflow/skills/devkit/scripts/check-user.sh
+```
+
+Parse the output sections:
+- `---STATUS---`: first_run (true/false), config_path
 - `---GIT_USER---`: name, email, commit_estimate
-- `---CONFIG---`: existing preferences if any
+- `---CONFIG---`: existing config if any
 
-### 2. Route by Status
+### Step 2: Route by Status
 
-| Status | Action |
-|--------|--------|
-| `first_run: true` | → First-Time Setup |
-| `first_run: false` | → Returning User Menu |
+**If `first_run: true`** → First-Time Setup
+**If `first_run: false`** → Returning User Menu
 
 ---
 
 ## First-Time Setup
 
 ### Welcome
-Greet user by git name if available:
-"Welcome to DevFlow, [name]!"
+Greet by git name if available: "Welcome to DevFlow, [name]!"
 
 ### Ask Experience Level
-Use AskUserQuestion with options:
+Use AskUserQuestion:
 
-**Question:** "What's your development experience level?"
+Question: "What's your development experience level?"
 
 | Option | Description |
 |--------|-------------|
-| Beginner | New to development, prefer detailed explanations |
+| Beginner | New to dev, prefer detailed explanations |
 | Intermediate | Comfortable with basics, balanced guidance |
 | Advanced | Experienced, prefer minimal output |
 
-**Smart suggestion**: Use `commit_estimate` from script:
+Smart suggestion based on `commit_estimate`:
 - `low` → suggest Beginner
 - `medium` → suggest Intermediate
 - `high` → suggest Advanced
 
 ### Save Preferences
-Run: `scripts/save-user.sh <level> "<name>"`
+Run:
+```bash
+devflow/skills/devkit/scripts/save-user.sh <level> "<name>"
+```
 
-### Confirmation
-Show saved preferences and explain what changes:
-
-**Beginner:**
-- Detailed step-by-step explanations
-- Confirm before destructive actions
-- Show helpful hints
-
-**Intermediate:**
-- Balanced explanations
-- Hints shown, less confirmation
-
-**Advanced:**
-- Concise output
-- Minimal confirmation
-- Just get it done
-
-### Show Available Skills
+### Confirm & Show Skills
+Explain what their level means, then show:
 ```
 Available DevFlow skills:
   /commit  - Smart commits with safety checks
   /pr      - Pull request creation and updates
   /release - Version releases with changelog
-  /devkit  - This setup (run again to change settings)
+  /devkit  - This setup (run again to change)
 ```
 
 ---
@@ -75,9 +88,7 @@ Available DevFlow skills:
 ## Returning User Menu
 
 ### Show Current Settings
-Display from config:
-- Level: [level]
-- Preferences: verbose, hints, confirm
+Display level and preferences from config.
 
 ### Offer Options
 Use AskUserQuestion:
@@ -85,49 +96,31 @@ Use AskUserQuestion:
 | Option | Action |
 |--------|--------|
 | View my settings | Show full config |
-| Change experience level | Re-run level selection, save |
-| Reset all preferences | Delete config, re-run setup |
-| Show available skills | List skills with descriptions |
+| Change level | Re-run level selection |
+| Reset preferences | Delete config, re-onboard |
+| Show skills | List available skills |
 | Exit | Done |
 
-### Change Level Flow
-If user selects "Change experience level":
-1. Ask new level (same as first-time)
-2. Run `scripts/save-user.sh <new-level> "<name>"`
-3. Confirm change
+### Change Level
+1. Ask new level
+2. Run `save-user.sh <new-level> "<name>"`
+3. Confirm
 
-### Reset Flow
-If user selects "Reset all preferences":
-1. Confirm: "This will delete your DevFlow preferences. Continue?"
+### Reset
+1. Confirm deletion
 2. Run: `rm ~/.devflow/config.yaml`
 3. Re-run first-time setup
 
 ---
 
-## How Other Skills Use This
-
-Other skills can check `~/.devflow/config.yaml` and adapt:
-
-```yaml
-# Read user level
-user:
-  level: intermediate
-
-# Adapt behavior
-preferences:
-  verbose_explanations: false
-  show_hints: true
-  confirm_before_actions: false
-```
-
-| Level | Behavior |
-|-------|----------|
-| beginner | Explain each step, confirm actions, show all hints |
-| intermediate | Brief explanations, show hints, less confirmation |
-| advanced | Minimal output, no hints, just execute |
+## Error Handling
+- Config not writable → warn, continue
+- Script fails → ask directly, save manually
 
 ---
 
-## Error Handling
-- Config dir not writable → warn, continue without saving
-- Script fails → fallback to asking directly, save manually
+End of agent prompt.
+
+## After Agent Completes
+
+The agent will return a summary. Display it to the user.
