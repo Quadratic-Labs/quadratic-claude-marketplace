@@ -134,6 +134,36 @@ checks:
   require_up_to_date_main: true
 ```
 
+---
+
+### DevKit Setup (`/devkit`)
+
+First-time setup and personalization. Adapts all skills to your experience level.
+
+**Features:**
+- First-run detection and onboarding
+- Experience level selection (beginner/intermediate/advanced)
+- Persistent preferences in `~/.devflow/config.yaml`
+- Smart level suggestion based on git history
+- Adapts verbosity and hints across all skills
+
+**Usage:**
+```
+/devkit       # Setup or view settings
+/setup        # Alias
+/init         # Alias
+```
+
+**Experience Levels:**
+
+| Level | Behavior |
+|-------|----------|
+| Beginner | Detailed explanations, confirm actions, show hints |
+| Intermediate | Balanced guidance, hints shown |
+| Advanced | Minimal output, just execute |
+
+**Stored in:** `~/.devflow/config.yaml` (persists across all projects)
+
 ## Installation
 
 1. Clone this repository or copy the `devflow/` directory to your project
@@ -146,5 +176,6 @@ checks:
    - `devflow/skills/commit/commit.yaml` - branch protection, conventions
    - `devflow/skills/pr/pr.yaml` - PR checks, auto-linking, templates
    - `devflow/skills/release/release.yaml` - versioning, GitHub integration
-4. Use `/commit` for commits, `/pr` for pull requests, `/release` for releases
+4. Run `/devkit` to set up your experience level
+5. Use `/commit` for commits, `/pr` for pull requests, `/release` for releases
 
