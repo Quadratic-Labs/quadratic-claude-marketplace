@@ -1,12 +1,27 @@
+---
+name: pr
+description: Smart PR creation and updates with auto-generated descriptions and pre-flight checks
+command: pr
+aliases:
+  - pull-request
+version: 1.0.0
+---
+
 # PR Skill
 
-**Command:** `/pr [--draft]` | `/pr update` | **Alias:** `/pull-request`
+You are executing the `/pr` command (alias: `/pull-request`). This skill helps create or update pull requests with smart PR descriptions and pre-flight checks.
 
-## Workflow
+**Usage:**
+- `/pr` or `/pr --draft` - Create a new PR (optionally as draft)
+- `/pr update` - Update an existing PR
+
+## Your Task
+
+Follow this workflow to create or update a pull request:
 
 ### 1. Gather Context
-- Read `devflow/skills/pr/pr.yaml`
-- Run `scripts/pre-checks.sh` → parse output sections
+- Read the config file at `devflow/skills/pr/pr.yaml` to understand user preferences
+- Run the pre-check script: `bash devflow/skills/pr/scripts/pre-checks.sh` and parse its output
 
 **Script output format:**
 ```
@@ -18,84 +33,101 @@ changed files (one per line)
 ---STATS---
 shortstat summary
 ---EXISTING_PR---
-gh pr view JSON (if exists)
+gh pr view JSON (if exists, empty otherwise)
 ```
 
 ### 2. Check for Existing PR
-If `---EXISTING_PR---` contains data:
-- Show: "PR #X already exists: [title]"
-- Ask: "Update this PR?" or "Create new PR?"
-- If update → jump to step 6 (update flow)
+If the `---EXISTING_PR---` section contains data:
+- Inform the user: "PR #X already exists: [title]"
+- Ask: "Do you want to update this PR or create a new one?"
+- If they choose update → skip to step 6 (update flow)
 
 ### 3. Pre-flight Checks
+Based on the script output, perform these checks:
 
 | Check | Action |
 |-------|--------|
-| `remote_exists: false` | Offer to push: `git push -u origin <branch>` |
-| `behind > 0` | Warn: "Branch is X commits behind base. Rebase?" |
-| `ahead == 0` | Abort: "No commits to create PR from" |
-| WIP commits (scan COMMITS for `WIP`, `fixup!`, `squash!`) | Warn or block per config |
+| `remote_exists: false` | Offer to push the branch: `git push -u origin <branch>` |
+| `behind > 0` | Warn: "Your branch is X commits behind the base branch. Do you want to rebase?" |
+| `ahead == 0` | Abort: "No commits to create a PR from" |
+| WIP commits (scan commits for `WIP`, `fixup!`, `squash!`) | Warn or block based on config |
 
-### 4. Extract Context (Claude analyzes)
-From script output, Claude determines:
-- **Issue numbers**: Parse from branch name (`feature/123-...`) or commit subjects (`fixes #456`)
-- **Change type**: Scan commit prefixes (`feat:`, `fix:`, `refactor:`)
-- **UI changes**: Check FILES for `.tsx`, `.jsx`, `.vue`, `.css`, `.scss`, `.html`
-- **Test changes**: Check FILES for `test.`, `spec.`
+### 4. Analyze the Changes
+From the script output, determine:
+- **Issue numbers**: Parse from branch name (e.g., `feature/123-...`) or commit subjects (e.g., `fixes #456`)
+- **Change type**: Scan commit message prefixes (`feat:`, `fix:`, `refactor:`, `docs:`, etc.)
+- **UI changes**: Check if FILES contain `.tsx`, `.jsx`, `.vue`, `.css`, `.scss`, or `.html`
+- **Test changes**: Check if FILES contain `test.`, `spec.`, or are in test directories
 
 ### 5. Generate PR Title
-From branch name:
+Generate a title from the branch name:
 - `feature/add-user-login` → "Add user login"
 - `fix/123-broken-auth` → "Fix broken auth"
+- Capitalize appropriately and make it descriptive
 
-Let user confirm or edit.
+Present the title to the user and let them confirm or edit it.
 
 ### 6. Generate PR Body
-Use `templates/PR_TEMPLATE.md` structure:
-- **Summary**: From commits, 2-3 bullets
-- **Type**: From commit prefixes
-- **Issues**: "Closes #X" if found
-- **Test Plan**: Prompt if `require_test_plan: true`
-- **Screenshots**: Prompt only if UI files changed
+Use the template at `templates/PR_TEMPLATE.md` (if it exists) or follow this structure:
 
-Present for approval.
+- **Summary**: Generate 2-3 bullet points from the commits
+- **Type of Change**: Determine from commit prefixes (feature, bugfix, refactor, etc.)
+- **Related Issues**: Add "Closes #X" if issue numbers were found
+- **Test Plan**: Prompt the user for this if `require_test_plan: true` in config
+- **Screenshots**: Prompt the user for screenshots ONLY if UI files were changed
 
-### 7. Create or Update PR
+Present the generated PR body to the user for approval or editing.
 
-**Create (new PR):**
+### 7. Create or Update the PR
+
+**For creating a new PR:**
 ```bash
-gh pr create --base <base> --title "<title>" --body "<body>" [--draft]
+gh pr create --base <base-branch> --title "<title>" --body "<body>" [--draft]
+```
+Add `--draft` flag if user requested a draft PR.
+
+**For updating an existing PR:**
+```bash
+gh pr edit <pr-number> --title "<title>" --body "<body>"
 ```
 
-**Update (existing PR):**
-```bash
-gh pr edit <number> --title "<title>" --body "<body>"
-```
-
-### 8. Post-PR
-- Show PR URL
-- Show CI link: `https://github.com/<owner>/<repo>/pull/<num>/checks`
-- Suggest reviewers: `gh pr edit <num> --add-reviewer <user>`
+### 8. Post-PR Actions
+After successfully creating/updating the PR:
+- Display the PR URL
+- Show the CI checks link: `https://github.com/<owner>/<repo>/pull/<number>/checks`
+- If configured in `pr.yaml`, suggest adding reviewers: `gh pr edit <number> --add-reviewer <user>`
 
 ## Update Flow (`/pr update`)
 
-When user runs `/pr update` or PR exists:
-1. Fetch current PR: `gh pr view --json number,title,body`
-2. Show current title/body
-3. Ask what to update: title, body, or both
-4. Re-analyze commits/files for updated description
-5. Run `gh pr edit <number> --title "..." --body "..."`
+When the user runs `/pr update` or when a PR already exists:
+1. Fetch the current PR data: `gh pr view --json number,title,body`
+2. Show the current title and body to the user
+3. Ask what they want to update: title only, body only, or both
+4. Re-analyze the commits and files for an updated description
+5. Execute: `gh pr edit <number> --title "..." --body "..."`
 
 ## Smart Prompts
 
-| Condition | Prompt |
-|-----------|--------|
-| UI files in diff | "Add screenshots?" |
-| >500 lines changed | "Large PR. Consider splitting?" |
-| No issue linked | "Link an issue?" |
-| PR exists | "Update existing PR #X?" |
+Based on the analysis, provide these contextual prompts:
+
+| Condition | Prompt to User |
+|-----------|----------------|
+| UI files in the diff | "Would you like to add screenshots?" |
+| More than 500 lines changed | "This is a large PR. Consider splitting it into smaller PRs?" |
+| No issue linked | "Would you like to link this to an issue?" |
+| PR already exists | "PR #X already exists. Update it?" |
 
 ## Error Handling
-- `gh` not installed → "Install: https://cli.github.com"
-- Not authenticated → `gh auth login`
-- Push fails → show error, retry option
+
+Handle these common errors gracefully:
+- **`gh` not installed**: Guide user to install: https://cli.github.com
+- **Not authenticated**: Run `gh auth login`
+- **Push fails**: Show the error message and offer to retry
+- **No commits**: Inform user there are no commits to create a PR from
+
+## Important Rules
+- Always respect the configuration settings in `pr.yaml`
+- Use the GitHub CLI (`gh`) for all PR operations
+- Present generated content for user approval before creating/updating PRs
+- Provide helpful, actionable error messages
+- Never create a PR without user confirmation of the title and body
