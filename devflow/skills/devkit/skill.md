@@ -1,3 +1,13 @@
+---
+name: devkit
+description: DevFlow setup and personalization - adapts to your experience level
+command: devkit
+aliases:
+  - setup
+  - init
+version: 1.0.0
+---
+
 # DevKit Skill
 
 **Command:** `/devkit` | **Aliases:** `/setup`, `/init`
