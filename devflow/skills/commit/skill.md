@@ -1,64 +1,83 @@
+---
+name: commit
+description: Smart commit workflow with safety checks and conventional message generation
+command: commit
+aliases:
+  - ci
+version: 1.0.0
+---
+
 # Commit Skill
 
-**Command:** `/commit [message]` | **Alias:** `/ci`
+You are executing the `/commit` command (alias: `/ci`). This skill helps create safe, well-formatted Git commits with conventional commit messages.
 
-## Workflow
+## Your Task
+
+Follow this workflow to create a commit:
 
 ### 1. Gather Context
-- Read `devflow/skills/commit/commit.yaml`
-- Run `scripts/pre-checks.sh` → parse JSON output
+- Read the config file at `devflow/skills/commit/commit.yaml` to understand user preferences
+- Run the pre-check script: `bash devflow/skills/commit/scripts/pre-checks.sh` and parse the JSON output
 
-### 2. Branch Safety
-If on protected branch, check `on_protected_branch` config:
+### 2. Branch Safety Check
+Check if the user is on a protected branch (main/master). Based on the `on_protected_branch` config setting:
 
 | Config | Behavior |
 |--------|----------|
-| `prompt` | Ask: Create branch / Abort / Override (require branch name confirmation) |
-| `warn` | Show warning, continue |
-| `block` | Hard stop |
+| `prompt` | Ask user to: Create new branch / Abort / Override (require branch name confirmation) |
+| `warn` | Show warning but allow commit to continue |
+| `block` | Hard stop - do not allow commit |
 
-If user chooses "Create branch": suggest name based on changes (`fix/...`, `feature/...`), confirm, run `git checkout -b <name>`.
+If user chooses "Create branch": suggest a name based on the changes (`fix/...`, `feature/...`, etc.), get confirmation, then run `git checkout -b <name>`.
 
-### 3. Staged Changes
-If none: offer to show unstaged, stage all (`git add -A`), stage specific files, or abort.
+### 3. Check for Staged Changes
+If no changes are staged:
+- Offer to show unstaged changes
+- Offer to stage all changes (`git add -A`)
+- Offer to stage specific files
+- Or abort
 
 ### 4. Safety Checks
-From config:
-- **Sensitive files** (`block_sensitive_files`): match against `sensitive_patterns`, offer to unstage or abort
-- **Large files** (`warn_large_files_kb`): warn with sizes
-- **Untracked** (`warn_untracked_files`): mention, ask if should stage
+Based on config settings, check for:
+- **Sensitive files** (`block_sensitive_files`): Check staged files against `sensitive_patterns`. If found, offer to unstage or abort.
+- **Large files** (`warn_large_files_kb`): Warn about files exceeding the size threshold.
+- **Untracked files** (`warn_untracked_files`): Mention them and ask if they should be staged.
 
 ### 5. Generate Commit Message
-Run `git diff --cached` and analyze.
+- Run `git diff --cached` to analyze the changes
+- Generate a commit message based on `conventions.style`:
+  - `conventional`: `type(scope): description` (types: feat, fix, docs, refactor, test, build, ci, chore, etc.)
+  - `gitmoji`: `:emoji: description`
+  - `custom`: Use the `custom_pattern` format
 
-Based on `conventions.style`:
-- `conventional`: `type(scope): description` (types: feat, fix, docs, refactor, etc.)
-- `gitmoji`: `:emoji: description`
+- Present the generated message to the user
+- Allow them to: use as-is, edit it, or write their own
+- Respect `max_subject_length` (default 72 chars)
 
-Present message, let user: use as-is, edit, or write own.
-
-Respect `max_subject_length` (default 72).
-
-### 6. Execute
+### 6. Execute the Commit
+Run:
 ```bash
 git commit -m "<message>"
 ```
-On success: show hash, files changed, insertions/deletions.
-On failure: explain, offer retry/abort.
 
-### 7. Post-Commit
+On success: Display the commit hash, files changed, insertions/deletions.
+On failure: Explain what went wrong and offer to retry or abort.
+
+### 7. Post-Commit Actions
 Based on config:
-- `suggest_push`: offer `git push origin <branch>`
-- `suggest_pr`: offer PR creation (if not on default branch)
+- If `suggest_push` is true: Offer to push with `git push origin <branch>`
+- If `suggest_pr` is true and not on default branch: Offer to create a PR
 
-## Branch Name Conventions
+## Branch Naming Conventions
+Use these prefixes when creating new branches:
 - `fix/...` for bug fixes
 - `feature/...` for new features
 - `docs/...` for documentation
 - `refactor/...` for refactoring
 
-## Error Handling
-- Explain what failed
-- Offer remediation
+## Important Rules
 - Never bypass pre-commit hooks
-- Never leave repo in bad state
+- Never force operations that could leave the repo in a bad state
+- Always explain failures clearly
+- Provide helpful remediation steps when errors occur
+- Respect all configuration settings from `commit.yaml`
