@@ -1,3 +1,13 @@
+---
+name: release
+description: Interactive release workflow with automated checks and tasks
+command: release
+aliases:
+  - rel
+  - ship
+version: 1.0.0
+---
+
 # Release Workflow Skill
 
 **Command:** `/release [version]`
