@@ -5,6 +5,10 @@ command: commit
 aliases:
   - ci
 version: 1.0.0
+user_invocable: true
+tags:
+  - git
+  - commit
 ---
 
 # Commit Skill
