@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./SessionStart.sh",
+            "command": "bash ./SessionStart.sh",
             "description": "Greets user and loads recent git branches and GitHub issues"
           }
         ]
