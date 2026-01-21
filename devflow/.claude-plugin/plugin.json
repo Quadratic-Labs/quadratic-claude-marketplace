@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ./SessionStart.sh",
+            "command": "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/SessionStart.ps1\"",
             "description": "Greets user and loads recent git branches and GitHub issues"
           }
         ]
