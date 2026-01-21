@@ -1,6 +1,6 @@
 {
   "name": "devflow",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quadratic's development workflow assistant",
   "repository": "https://github.com/Quadratic-Labs/quadratic-claude-marketplace",
   "author": {
@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/SessionStart.ps1\"",
+            "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/SessionStart.ps1\"",
             "description": "Greets user and loads recent git branches and GitHub issues"
           }
         ]
