@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# devflow StartSession Hook
+# devkit StartSession Hook
 # Greets the user and loads context about recent issues and branches
 # Outputs structured JSON for Claude Code
 

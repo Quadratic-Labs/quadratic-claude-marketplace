@@ -1,11 +1,11 @@
 #!/bin/bash
-# Save DevFlow user preferences
+# Save DevKit user preferences
 # Usage: save-user.sh <level> [name]
 
 LEVEL="$1"
 NAME="$2"
 
-CONFIG_DIR="$HOME/.devflow"
+CONFIG_DIR="$HOME/.devkit"
 CONFIG_PATH="$CONFIG_DIR/config.yaml"
 
 # Validate level
@@ -52,7 +52,7 @@ esac
 
 # Write config
 cat > "$CONFIG_PATH" << EOF
-# DevFlow User Configuration
+# DevKit User Configuration
 # Created: $DATE
 
 user:

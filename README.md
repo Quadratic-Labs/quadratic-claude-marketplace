@@ -4,7 +4,7 @@ This is a curated collection of Claude Code plugins for Quadratic projects.
 
 ## Available Plugins
 
-- DevFlow - Development Workflow Plugin: Comprehensive development workflow automation for software releases, testing, and quality checks.
+- DevKit - Development Workflow Plugin: Comprehensive development workflow automation for software releases, testing, and quality checks.
 
 ## Requirements
 

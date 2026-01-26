@@ -1,8 +1,8 @@
-# DevFlow - Development Workflow Plugin
+# DevKit - Development Workflow Plugin
 
 Comprehensive development workflow automation for software releases, testing, and quality checks.
 
-**Location:** `devflow/`
+**Location:** `devkit/`
 
 ## Skills
 
@@ -26,7 +26,7 @@ Smart commit workflow with safety checks, branch protection, and intelligent com
 
 **Configuration:**
 
-Edit `devflow/skills/commit/commit.yaml`:
+Edit `devkit/skills/commit/commit.yaml`:
 ```yaml
 branches:
   protected: [main, master]
@@ -66,7 +66,7 @@ Smart PR creation and updates with auto-generated descriptions and pre-flight ch
 
 **Configuration:**
 
-Edit `devflow/skills/pr/pr.yaml`:
+Edit `devkit/skills/pr/pr.yaml`:
 ```yaml
 base_branch: auto  # auto | main | master | develop
 
@@ -105,7 +105,7 @@ Automated release management with intelligent checks and GitHub integration.
 
 **Configuration:**
 
-Edit `devflow/skills/release/release.yaml` to customize for your project:
+Edit `devkit/skills/release/release.yaml` to customize for your project:
 - Set default branch and versioning scheme
 - Configure version file paths (package.json, pyproject.toml, etc.)
 - Customize branch and tag naming patterns
@@ -143,7 +143,7 @@ First-time setup and personalization. Adapts all skills to your experience level
 **Features:**
 - First-run detection and onboarding
 - Experience level selection (beginner/intermediate/advanced)
-- Persistent preferences in `~/.devflow/config.yaml`
+- Persistent preferences in `~/.devkit/config.yaml`
 - Smart level suggestion based on git history
 - Adapts verbosity and hints across all skills
 
@@ -162,20 +162,20 @@ First-time setup and personalization. Adapts all skills to your experience level
 | Intermediate | Balanced guidance, hints shown |
 | Advanced | Minimal output, just execute |
 
-**Stored in:** `~/.devflow/config.yaml` (persists across all projects)
+**Stored in:** `~/.devkit/config.yaml` (persists across all projects)
 
 ## Installation
 
-1. Clone this repository or copy the `devflow/` directory to your project
+1. Clone this repository or copy the `devkit/` directory to your project
 2. Configure Claude Code to use the plugin:
    ```bash
    # Add to your Claude Code configuration
-   export CLAUDE_PLUGINS_PATH="/path/to/quadratic-claude-marketplace/devflow"
+   export CLAUDE_PLUGINS_PATH="/path/to/quadratic-claude-marketplace/devkit"
    ```
 3. Customize skill configs for your project:
-   - `devflow/skills/commit/commit.yaml` - branch protection, conventions
-   - `devflow/skills/pr/pr.yaml` - PR checks, auto-linking, templates
-   - `devflow/skills/release/release.yaml` - versioning, GitHub integration
+   - `devkit/skills/commit/commit.yaml` - branch protection, conventions
+   - `devkit/skills/pr/pr.yaml` - PR checks, auto-linking, templates
+   - `devkit/skills/release/release.yaml` - versioning, GitHub integration
 4. Run `/devkit` to set up your experience level
 5. Use `/commit` for commits, `/pr` for pull requests, `/release` for releases
 

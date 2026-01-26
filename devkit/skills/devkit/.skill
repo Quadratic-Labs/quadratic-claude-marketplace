@@ -1,6 +1,6 @@
 {
   "name": "devkit",
-  "description": "DevFlow setup and personalization - adapts to your experience level",
+  "description": "DevKit setup and personalization - adapts to your experience level",
   "version": "1.0.0",
   "command": "devkit",
   "aliases": ["setup", "init"],
