@@ -60,11 +60,21 @@ if command -v gh &> /dev/null; then
 fi
 
 # Build the display message
-DISPLAY_MESSAGE="🚀 Welcome to your dev session!
 
+  
+   🟩🟩🟩🟩🟩🟩
+  🟩           🟩    👋 Hi $UserName! 
+  🟩           🟩       Welcome to the QUADRATIC DevKit 
+  🟩           🟩       
+  🟩           🟩    💡 For help, type :
+  🟩           🟩       /devkit:help
+   🟩🟩🟩🟩              
+           🟩  
+            🟩       
+            
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-👋 Hi $USER_NAME! Let me catch you up on what's been happening...
+👋 Let me catch you up on what's been happening...
 
 📡 Fetching latest from remote...
 📍 Current branch: $CURRENT_BRANCH

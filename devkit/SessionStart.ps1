@@ -103,6 +103,9 @@ $ClosedIssues
 # Escape the message for JSON using PowerShell's ConvertTo-Json
 $EscapedMessage = $DisplayMessage | ConvertTo-Json
 
+# Wait 2 seconds before displaying the message
+Start-Sleep -Seconds 2
+
 # Output structured JSON
 $output = @"
 {
