@@ -4,7 +4,7 @@
 set -e
 
 VERSION="$1"
-CONFIG_FILE="${2:-devflow/skills/release/release.yaml}"
+CONFIG_FILE="${2:-devkit/skills/release/release.yaml}"
 
 if [ -z "$VERSION" ]; then
   echo "Usage: $0 <version> [config-file]"

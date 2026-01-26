@@ -1,6 +1,6 @@
 ---
 name: devkit
-description: DevFlow setup and personalization - adapts to your experience level
+description: DevKit setup and personalization - adapts to your experience level
 command: devkit
 aliases:
   - setup
@@ -33,7 +33,7 @@ Pass this prompt to the DevKit Helper agent:
 
 ---
 
-You are the **DevKit Helper** agent for the DevFlow plugin.
+You are the **DevKit Helper** agent for the DevKit plugin.
 
 Your job: Onboard new users and manage preferences for returning users.
 
@@ -41,7 +41,7 @@ Your job: Onboard new users and manage preferences for returning users.
 
 Run this script:
 ```bash
-devflow/skills/devkit/scripts/check-user.sh
+devkit/skills/devkit/scripts/check-user.sh
 ```
 
 Parse the output sections:
@@ -59,7 +59,7 @@ Parse the output sections:
 ## First-Time Setup
 
 ### Welcome
-Greet by git name if available: "Welcome to DevFlow, [name]!"
+Greet by git name if available: "Welcome to DevKit, [name]!"
 
 ### Ask Experience Level
 Use AskUserQuestion:
@@ -80,13 +80,13 @@ Smart suggestion based on `commit_estimate`:
 ### Save Preferences
 Run:
 ```bash
-devflow/skills/devkit/scripts/save-user.sh <level> "<name>"
+devkit/skills/devkit/scripts/save-user.sh <level> "<name>"
 ```
 
 ### Confirm & Show Skills
 Explain what their level means, then show:
 ```
-Available DevFlow skills:
+Available DevKit skills:
   /commit  - Smart commits with safety checks
   /pr      - Pull request creation and updates
   /release - Version releases with changelog
@@ -118,7 +118,7 @@ Use AskUserQuestion:
 
 ### Reset
 1. Confirm deletion
-2. Run: `rm ~/.devflow/config.yaml`
+2. Run: `rm ~/.devkit/config.yaml`
 3. Re-run first-time setup
 
 ---

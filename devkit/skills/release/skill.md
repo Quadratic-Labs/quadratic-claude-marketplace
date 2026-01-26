@@ -33,8 +33,8 @@ When the user triggers a release (e.g., `/release` or "I want to create a releas
 
 ### 1. Load Configuration and Context
 Read the following files:
-- `devflow/skills/release/release.yaml` - Project configuration
-- `devflow/skills/release/checklist.md` - Release checklist
+- `devkit/skills/release/release.yaml` - Project configuration
+- `devkit/skills/release/checklist.md` - Release checklist
 - Get current git branch, latest tags, and repository state
 
 ### 2. Verify Milestone and Issues (if enabled)
@@ -74,7 +74,7 @@ For each incomplete item, offer assistance:
 ### 6. Create Release Branch and Tag
 - Ensure working tree is clean (git status)
 - Ensure main/default branch is up to date
-- Run `scripts/create-release.sh <version> devflow/skills/release/release.yaml`
+- Run `scripts/create-release.sh <version> devkit/skills/release/release.yaml`
   - This will create the branch and tag according to config patterns
 - Push to remote: `git push -u origin <release-branch> && git push origin <tag>`
 
