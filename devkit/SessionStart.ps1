@@ -16,7 +16,7 @@ git fetch origin --quiet 2>$null
 $CurrentBranch = git branch --show-current
 
 # Get recent local branches sorted by last commit date
-$LocalBranchesRaw = git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(authorname)' --count=5
+$LocalBranchesRaw = git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(authorname)' --count=3
 $LocalBranches = $LocalBranchesRaw | ForEach-Object {
     $parts = $_ -split '\|'
     $branch = $parts[0]
@@ -81,32 +81,15 @@ $DisplayMessage = @"
   🟩           🟩    💡 For help, type :
   🟩           🟩       /devkit:help
    🟩🟩🟩🟩              
-           🟩  
+           🟩         📡Let me catch you up on what's been happening...
             🟩       
             
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-👋 Hi $UserName! Let me catch you up on what's been happening...
-
-# 📡 Fetching latest from remote...
-#📍 Current branch: $CurrentBranch
-#
+📍 Current branch: $CurrentBranch
 🌿 Recent branches you've worked on:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 $LocalBranchesStr
-
-#🌍 Recent remote branches:
-#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-#$RemoteBranchesStr
-#
 🎫 Recent GitHub issues:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 $GithubIssues
 
-# 📦 Recently closed issues:
-# $ClosedIssues
-#
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✨ You're all set! What would you like to work on today?
 "@
 
