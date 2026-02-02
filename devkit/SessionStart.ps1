@@ -72,8 +72,17 @@ if (Get-Command gh -ErrorAction SilentlyContinue) {
 
 # Build the display message
 $DisplayMessage = @"
-🚀 Welcome to your dev session!
-
+  
+   🟩🟩🟩🟩🟩🟩
+  🟩           🟩    👋 Hi $UserName! 
+  🟩           🟩       Welcome to the QUADRATIC DevKit 
+  🟩           🟩       
+  🟩           🟩    💡 For help, type :
+  🟩           🟩       /devkit:help
+   🟩🟩🟩🟩              
+           🟩  
+            🟩       
+            
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 👋 Hi $UserName! Let me catch you up on what's been happening...
@@ -102,6 +111,9 @@ $ClosedIssues
 
 # Escape the message for JSON using PowerShell's ConvertTo-Json
 $EscapedMessage = $DisplayMessage | ConvertTo-Json
+
+# Wait 2 seconds before displaying the message
+Start-Sleep -Seconds 2
 
 # Output structured JSON
 $output = @"

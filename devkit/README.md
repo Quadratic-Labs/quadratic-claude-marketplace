@@ -1,4 +1,4 @@
-# DevKit - Development Workflow Plugin
+# Devkit - Development Workflow Plugin
 
 Comprehensive development workflow automation for software releases, testing, and quality checks.
 
