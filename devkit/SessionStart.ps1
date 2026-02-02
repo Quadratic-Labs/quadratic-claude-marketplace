@@ -73,6 +73,7 @@ if (Get-Command gh -ErrorAction SilentlyContinue) {
 # Build the display message
 $DisplayMessage = @"
   
+
    🟩🟩🟩🟩🟩🟩
   🟩           🟩    👋 Hi $UserName! 
   🟩           🟩       Welcome to the QUADRATIC DevKit 
@@ -87,24 +88,24 @@ $DisplayMessage = @"
 
 👋 Hi $UserName! Let me catch you up on what's been happening...
 
-📡 Fetching latest from remote...
-📍 Current branch: $CurrentBranch
-
+# 📡 Fetching latest from remote...
+#📍 Current branch: $CurrentBranch
+#
 🌿 Recent branches you've worked on:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 $LocalBranchesStr
 
-🌍 Recent remote branches:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-$RemoteBranchesStr
-
+#🌍 Recent remote branches:
+#━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#$RemoteBranchesStr
+#
 🎫 Recent GitHub issues:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 $GithubIssues
 
-📦 Recently closed issues:
-$ClosedIssues
-
+# 📦 Recently closed issues:
+# $ClosedIssues
+#
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✨ You're all set! What would you like to work on today?
 "@
