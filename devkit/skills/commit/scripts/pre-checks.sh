@@ -4,7 +4,7 @@
 
 set -e
 
-CONFIG_FILE="${1:-devflow/skills/commit/commit.yaml}"
+CONFIG_FILE="${1:-devkit/skills/commit/commit.yaml}"
 
 # Check if in a git repository
 if ! git rev-parse --is-inside-work-tree &> /dev/null; then

@@ -20,8 +20,8 @@ You are executing the `/pr` command (alias: `/pull-request`). This skill helps c
 Follow this workflow to create or update a pull request:
 
 ### 1. Gather Context
-- Read the config file at `devflow/skills/pr/pr.yaml` to understand user preferences
-- Run the pre-check script: `bash devflow/skills/pr/scripts/pre-checks.sh` and parse its output
+- Read the config file at `devkit/skills/pr/pr.yaml` to understand user preferences
+- Run the pre-check script: `bash devkit/skills/pr/scripts/pre-checks.sh` and parse its output
 
 **Script output format:**
 ```

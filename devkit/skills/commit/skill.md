@@ -20,8 +20,8 @@ You are executing the `/commit` command (alias: `/ci`). This skill helps create 
 Follow this workflow to create a commit:
 
 ### 1. Gather Context
-- Read the config file at `devflow/skills/commit/commit.yaml` to understand user preferences
-- Run the pre-check script: `bash devflow/skills/commit/scripts/pre-checks.sh` and parse the JSON output
+- Read the config file at `devkit/skills/commit/commit.yaml` to understand user preferences
+- Run the pre-check script: `bash devkit/skills/commit/scripts/pre-checks.sh` and parse the JSON output
 
 ### 2. Branch Safety Check
 Check if the user is on a protected branch (main/master). Based on the `on_protected_branch` config setting:

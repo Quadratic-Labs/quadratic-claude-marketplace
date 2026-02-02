@@ -8,8 +8,8 @@
   "version": "1.0.0",
   "plugins": [
     {
-      "name": "devflow",
-      "source": "./devflow"
+      "name": "devkit",
+      "source": "./devkit"
     }
   ]
 }

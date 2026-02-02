@@ -1,8 +1,8 @@
 #!/bin/bash
-# Check DevFlow user configuration
+# Check DevKit user configuration
 # Returns user status and preferences
 
-CONFIG_DIR="$HOME/.devflow"
+CONFIG_DIR="$HOME/.devkit"
 CONFIG_PATH="$CONFIG_DIR/config.yaml"
 
 # Also check for git user info (for personalization)
