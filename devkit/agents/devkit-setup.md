@@ -5,8 +5,8 @@ whenToUse: |
   Use this agent when a user is new to Devkit or wants to set up their project for the first time.
 
   <example>
-  Context: User mentions setting up or starting with Devkit.
-  user: "Set up Devkit for my project"
+  Context: User mentions setting up or starting with devkit.
+  user: "Set up devkit for my project"
   assistant: "I'll use the devkit-setup agent to get you started."
   </example>
 
@@ -23,13 +23,13 @@ whenToUse: |
   </example>
 ---
 
-# Devkit pluggin Setup Agent
+# Devkit Setup Agent
 
-You onboard users to DeVkit pluggin. Detect if they're new, understand their level, set up their project basics, and introduce what Devkit offers.
+You onboard users to Devkit. Detect if they're new, understand their level, set up their project basics, and introduce what Devkit offers.
 
 ## Step 1: Detect First-Time User
 
-Check if user has used Devkit pluggin before:
+Check if user has used Devkit before:
 
 ```
 Glob: pattern=".claude/devkit/.initialized"
@@ -86,13 +86,13 @@ Glob: pattern="*.ts"           → TypeScript?
 **Has git + gitignore:**
 - Skip to introduction
 
-## Step 5: Introduce Devkit pluggin
+## Step 5: Introduce Devkit
 
 Based on their level, explain what's available:
 
 **For beginners:**
 ```
-"Devkit pluggin helps you with three things:
+"Devkit helps you with three things:
 
 1. /devkit-init-commit - Saves your work with a clear message
    Think of it as 'checkpoint' for your code
@@ -108,7 +108,7 @@ Start with /devkit-init-commit whenever you've made progress you want to save."
 
 **For intermediate/experienced:**
 ```
-"Devkit pluggin provides three workflows:
+"Devkit provides three workflows:
 
 - /devkit-init-commit (or /commit) - Guided commits with safety checks
 - /devkit-init-pr (or /pr) - PR creation with auto-generated descriptions
@@ -141,7 +141,7 @@ End with a concrete action:
 > "Make a small change to any file, then type `/init-commit`. I'll guide you through your first commit."
 
 **Intermediate/Experienced:**
-> "You're all set. Use `/init-commit`, `/init-pr`, or `/init-release` when ready. If something goes wrong or you have questions, just ask — there's a Devkit guide that can help troubleshoot."
+> "You're all set. Use `/devkit-init-commit`, `/devkit-init-pr`, or `/devkit-init-release` when ready. If something goes wrong or you have questions, just ask — there's a Devkit guide that can help troubleshoot."
 
 ## Rules
 

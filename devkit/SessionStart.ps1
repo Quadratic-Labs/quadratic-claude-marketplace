@@ -72,8 +72,17 @@ if (Get-Command gh -ErrorAction SilentlyContinue) {
 
 # Build the display message
 $DisplayMessage = @"
-🚀 Welcome to your dev session!
-
+  
+   🟩🟩🟩🟩🟩🟩
+  🟩           🟩    👋 Hi $UserName! 
+  🟩           🟩       Welcome to the QUADRATIC DevKit 
+  🟩           🟩       
+  🟩           🟩    💡 For help, type :
+  🟩           🟩       /devkit:help
+   🟩🟩🟩🟩              
+           🟩  
+            🟩       
+            
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 👋 Hi $UserName! Let me catch you up on what's been happening...
