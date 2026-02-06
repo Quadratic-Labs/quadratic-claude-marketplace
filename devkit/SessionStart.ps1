@@ -78,10 +78,10 @@ $DisplayMessage = @"
   🟩           🟩    👋 Hi $UserName! 
   🟩           🟩       Welcome to the QUADRATIC DevKit 
   🟩           🟩       
-  🟩           🟩    💡 For help, type :
-  🟩           🟩       /devkit:help
+  🟩           🟩    📌 For a quick tuto, type : /devkit:intro
+  🟩           🟩    💡 For help, type : /devkit:help 
    🟩🟩🟩🟩              
-           🟩         📡Let me catch you up on what's been happening...
+           🟩         📡 Let me catch you up on what's been happening...
             🟩       
             
 📍 Current branch: $CurrentBranch
