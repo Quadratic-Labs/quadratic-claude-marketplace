@@ -84,9 +84,104 @@ Glob: pattern="*.ts"           → TypeScript?
 - Explain briefly what .gitignore does (for beginners)
 
 **Has git + gitignore:**
-- Skip to introduction
+- Continue to CLAUDE.md generation
 
-## Step 5: Introduce Devkit
+## Step 5: Generate CLAUDE.md
+
+CLAUDE.md is loaded into every Claude session. It makes Claude permanently smarter about this project. This is the highest-value setup step.
+
+### 5a: Check if CLAUDE.md exists
+
+```
+Glob: pattern="CLAUDE.md"
+```
+
+- **Exists** → "You already have a CLAUDE.md. Want me to review it and suggest improvements?" If no, skip to Step 6.
+- **Missing** → proceed with generation
+
+### 5b: Scan the codebase (run all globs in parallel)
+
+```
+# Project identity
+Read: package.json OR pyproject.toml OR README.md → name, description
+
+# Dependencies and scripts
+Read: package.json scripts OR Makefile OR pyproject.toml [tool.*] sections
+
+# Architecture
+Glob: top-level directories (src/, lib/, app/, api/, tests/, etc.)
+Glob: key patterns inside (routes/, models/, schemas/, components/, hooks/, services/)
+
+# Tooling
+Glob: .eslintrc*, eslint.config.*, .prettierrc*, ruff.toml, pyproject.toml
+Glob: .github/workflows/*.yml, Dockerfile, docker-compose.yml
+Glob: .env.example
+
+# Tests
+Glob: tests/**/*.py OR **/*.test.ts OR **/*.spec.ts → detect framework and organization
+```
+
+### 5c: Ask for tribal knowledge
+
+Ask the user ONE question:
+
+```
+AskUserQuestion:
+  question: "Any project-specific rules or patterns Claude should always follow?"
+  options:
+    - label: "I'll add some"
+      description: "Let me type conventions, gotchas, or things to avoid"
+    - label: "Skip for now"
+      description: "I can always edit CLAUDE.md later"
+```
+
+### 5d: Generate CLAUDE.md
+
+Build the file from scan results only. Rules:
+- **Only include sections where something was detected.** No empty headings, no placeholders.
+- **Only write project-specific facts.** Don't explain what Python/React/FastAPI is — Claude knows.
+- **Keep it compact.** Bullet points, not paragraphs. Target under 50 lines.
+- **Include the user's conventions** from step 5c if provided.
+
+Target format:
+
+```markdown
+# Project: <name>
+
+<one-line description if found>
+
+## Stack
+<detected languages, frameworks, databases — just names>
+
+## Structure
+- <dir>/ — <purpose>
+- <dir>/ — <purpose>
+
+## Commands
+- `<command>` — <what it does>
+- `<command>` — <what it does>
+
+## Conventions
+- <detected or user-provided convention>
+- <detected or user-provided convention>
+```
+
+Only add these sections if relevant:
+- `## Environment` — if .env.example found, list required vars
+- `## Avoid` — if user provided gotchas in 5c
+
+### 5e: Show and confirm
+
+Present the generated CLAUDE.md to the user before writing:
+
+> "Here's what I've generated for your CLAUDE.md. This will be loaded into every future Claude session. Review it and let me know if you'd like changes."
+
+Write the file only after user approval.
+
+**For beginners**, explain why this matters:
+> "CLAUDE.md is like a cheat sheet for Claude. It helps Claude understand your project without you having to explain it every time."
+
+## Step 6: Introduce Devkit
 
 Based on their level, explain what's available:
 
@@ -117,7 +212,7 @@ Start with /devkit-init-commit whenever you've made progress you want to save."
 Each has smart defaults. Run /devkit-init-commit to try it."
 ```
 
-## Step 6: Mark Setup Complete
+## Step 7: Mark Setup Complete
 
 Create the initialized marker:
 
@@ -126,14 +221,16 @@ Write: .claude/devkit/.initialized
 
 first_setup: [current date]
 user_level: [beginner|intermediate|experienced]
+claude_md_generated: [true|false]
 ```
 
 This file:
 - Tells Devkit this user has been onboarded
 - Stores their level for future reference
+- Tracks whether CLAUDE.md was generated
 - Is tiny, won't clutter their repo
 
-## Step 7: Offer Next Step
+## Step 8: Offer Next Step
 
 End with a concrete action:
 
@@ -147,7 +244,7 @@ End with a concrete action:
 
 - **Adapt to level.** Beginners need more context. Experienced users want brevity.
 - **Don't overwhelm.** Introduce 3 commands max. They'll discover more later.
-- **Create only essentials.** .gitignore if missing, .initialized marker. Nothing else.
+- **CLAUDE.md: only project-specific facts.** Don't explain what tools are. Don't add empty sections. Keep under 50 lines.
 - **Be encouraging.** Juniors may be intimidated. Keep it friendly.
 - **Hand off questions.** Setup is for onboarding. Questions about "why did X fail" go to the guide agent.
 
@@ -163,3 +260,9 @@ End with a concrete action:
 
 **Experienced user:**
 > Skip explanations. Just confirm setup and list available commands.
+
+**User asks about creating a skill:**
+> "You can create skills with `/devkit:add-skill` — it'll guide you through the structure and best practices."
+
+**Returning user wants to regenerate CLAUDE.md:**
+> Re-run Step 5 only. Offer to enhance existing file rather than overwrite.
