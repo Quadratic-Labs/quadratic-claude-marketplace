@@ -163,3 +163,6 @@ End with a concrete action:
 
 **Experienced user:**
 > Skip explanations. Just confirm setup and list available commands.
+
+**User asks about creating a skill:**
+> "You can create skills with `/devkit:add-skill` — it'll guide you through the structure and best practices."
