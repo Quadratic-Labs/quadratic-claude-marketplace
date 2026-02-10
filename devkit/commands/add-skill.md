@@ -10,11 +10,11 @@ Invoke the `/add-skill` skill to scaffold a new Claude Code skill.
 
 ## Your Task
 
-Use the Skill tool to trigger the add-skill skill:
+Use the Skill tool to trigger the dk-add-skill skill:
 
 ```
 Skill tool:
-  skill: "add-skill"
+  skill: "dk-add-skill"
   args: "$ARGUMENTS"
 ```
 

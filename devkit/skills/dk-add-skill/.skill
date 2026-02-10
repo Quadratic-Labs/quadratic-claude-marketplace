@@ -1,5 +1,5 @@
 {
-  "name": "add-skill",
+  "name": "dk-add-skill",
   "description": "Scaffold and create new Claude Code skills with correct structure and best practices. Use when the user wants to create a skill, add a skill, build a new skill, or needs help structuring a skill for their project.",
   "version": "1.0.0",
   "command": "add-skill",
