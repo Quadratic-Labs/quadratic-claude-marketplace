@@ -2,6 +2,121 @@
 # Greets the user and loads context about recent issues and branches
 # Outputs structured JSON for Claude Code
 
+# Force UTF-8 output so emojis render correctly on all Windows systems
+
+# ============================================
+# Git Protection Hooks (auto-install if missing)
+# ============================================
+$HooksInstalled = ""
+if (Test-Path ".git") {
+    $HooksDir = ".git/hooks"
+    $ProtectionMarker = "# QUADRATIC-DEVKIT-PROTECTION"
+
+    # Create hooks directory if it doesn't exist
+    if (-not (Test-Path $HooksDir)) {
+        New-Item -ItemType Directory -Path $HooksDir -Force | Out-Null
+    }
+
+    # ===== PRE-COMMIT HOOK =====
+    $PreCommitHook = ".git/hooks/pre-commit"
+    $PreCommitProtection = @'
+
+# QUADRATIC-DEVKIT-PROTECTION
+# Block direct commits to main/master - installed by Quadratic DevKit
+protected_branches=("main" "master")
+current_branch=$(git branch --show-current)
+for branch in "${protected_branches[@]}"; do
+  if [ "$current_branch" = "$branch" ]; then
+    echo ""
+    echo "ERROR: Direct commit to '$branch' is blocked."
+    echo "Create a feature branch instead: git checkout -b feature/your-feature-name"
+    echo ""
+    exit 1
+  fi
+done
+# END-QUADRATIC-DEVKIT-PROTECTION
+'@
+
+    $PreCommitInstalled = $false
+    if (-not (Test-Path $PreCommitHook)) {
+        # No hook exists - create new one
+        $NewHook = "#!/bin/bash`n$PreCommitProtection`n`nexit 0"
+        Set-Content -Path $PreCommitHook -Value $NewHook -NoNewline
+        # Make executable on Unix-like systems
+        if ($IsLinux -or $IsMacOS) {
+            chmod +x $PreCommitHook
+        }
+        $PreCommitInstalled = $true
+    } else {
+        # Hook exists - check if protection already added
+        $ExistingContent = Get-Content $PreCommitHook -Raw
+        if ($ExistingContent -notmatch "QUADRATIC-DEVKIT-PROTECTION") {
+            # Append protection before the final 'exit 0' if it exists, otherwise at end
+            if ($ExistingContent -match "exit 0\s*$") {
+                $UpdatedContent = $ExistingContent -replace "exit 0\s*$", "$PreCommitProtection`n`nexit 0"
+            } else {
+                $UpdatedContent = $ExistingContent + "`n$PreCommitProtection"
+            }
+            Set-Content -Path $PreCommitHook -Value $UpdatedContent -NoNewline
+            $PreCommitInstalled = $true
+        }
+    }
+
+    # ===== PRE-PUSH HOOK =====
+    $PrePushHook = ".git/hooks/pre-push"
+    $PrePushProtection = @'
+
+# QUADRATIC-DEVKIT-PROTECTION
+# Block direct pushes to main/master - installed by Quadratic DevKit
+protected_branches=("main" "master")
+current_branch=$(git branch --show-current)
+for branch in "${protected_branches[@]}"; do
+  if [ "$current_branch" = "$branch" ]; then
+    echo ""
+    echo "ERROR: Direct push to '$branch' is blocked."
+    echo "Create a feature branch and open a PR instead."
+    echo ""
+    exit 1
+  fi
+done
+# END-QUADRATIC-DEVKIT-PROTECTION
+'@
+
+    $PrePushInstalled = $false
+    if (-not (Test-Path $PrePushHook)) {
+        # No hook exists - create new one
+        $NewHook = "#!/bin/bash`n$PrePushProtection`n`nexit 0"
+        Set-Content -Path $PrePushHook -Value $NewHook -NoNewline
+        # Make executable on Unix-like systems
+        if ($IsLinux -or $IsMacOS) {
+            chmod +x $PrePushHook
+        }
+        $PrePushInstalled = $true
+    } else {
+        # Hook exists - check if protection already added
+        $ExistingContent = Get-Content $PrePushHook -Raw
+        if ($ExistingContent -notmatch "QUADRATIC-DEVKIT-PROTECTION") {
+            # Append protection before the final 'exit 0' if it exists, otherwise at end
+            if ($ExistingContent -match "exit 0\s*$") {
+                $UpdatedContent = $ExistingContent -replace "exit 0\s*$", "$PrePushProtection`n`nexit 0"
+            } else {
+                $UpdatedContent = $ExistingContent + "`n$PrePushProtection"
+            }
+            Set-Content -Path $PrePushHook -Value $UpdatedContent -NoNewline
+            $PrePushInstalled = $true
+        }
+    }
+
+    # Build status message
+    if ($PreCommitInstalled -and $PrePushInstalled) {
+        $HooksInstalled = "🛡️ Branch protection installed (blocks commits & pushes to main/master)"
+    } elseif ($PreCommitInstalled) {
+        $HooksInstalled = "🛡️ Commit protection added (blocks commits to main/master)"
+    } elseif ($PrePushInstalled) {
+        $HooksInstalled = "🛡️ Push protection added (blocks pushes to main/master)"
+    }
+}
+
 # Check if jq is available
 $HasJq = $null -ne (Get-Command jq -ErrorAction SilentlyContinue)
 
@@ -84,6 +199,7 @@ $DisplayMessage = @"
            🟩         📡 Let me catch you up on what's been happening...
             🟩       
             
+$HooksInstalled
 📍 Current branch: $CurrentBranch
 🌿 Recent branches you've worked on:
 $LocalBranchesStr
