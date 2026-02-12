@@ -24,7 +24,6 @@ whenToUse: |
 
   <example>
   Context: User confused about workflow.
-========
   user: "Why is Devkit asking me about protected branches?"
   assistant: "I'll use the devkit-help agent to explain."
   </example>
